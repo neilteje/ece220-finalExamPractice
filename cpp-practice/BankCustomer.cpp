@@ -23,8 +23,7 @@ void BankCustomer::define_savings(double init_savings_balance, double monthly_sa
 //Returns string containing first and last name separated by a space
 string BankCustomer::get_customer_name(void){
 //IMPLEMENT ME
-   string fullName = my_customer.get_first_name() + " " + my_customer.get_last_name();
-   return fullName;
+   return my_customer.get_first_name() + " " + my_customer.get_last_name();
 }
 
 //Returns total balance savings account
