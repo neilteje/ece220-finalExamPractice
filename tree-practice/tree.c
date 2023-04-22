@@ -3,16 +3,43 @@
 #include "tree.h"
 #include "queue.h"
 
+struct Node {
+    int value;
+    struct Node* left;
+    struct Node* right;
+    struct Node* prev_node;
+    struct Node* head_node;
+};
+
+void bst_to_dll(struct Node* current_node) {
+
+    if (current_node == NULL) {
+        return;
+    }
+    
+    bst_to_dll(current_node->left);
+    
+    if (prev_node != NULL) {
+        prev_node->right = current_node;
+        current_node->left = prev_node;
+    } else {
+        head_node = current_node;
+    }
+    
+    prev_node = current_node;
+    
+    bst_to_dll
+
 /*  delete_list - given the head of a list deletes it, freeing memory
 *   INPUT: head - the head of the list
 *	OUTPUT: deletes the list
 *	RETURN: none
 */
-void deleteList(node * head)
+void deleteList(Node * head)
 {
     while (head != NULL)
     {
-        node * temp = head;
+        Node * temp = head;
         head = head->right;
         free(temp);
     }
@@ -23,7 +50,7 @@ void deleteList(node * head)
 *  OUTPUT: allocates memory and creates a tree
 *  RETURN: returns a pointer to the root of the tree
 */
-node * create_tree(char * fileName)
+Node * create_tree(char * fileName)
 {
 	int value;
     FILE * fp;
@@ -38,7 +65,7 @@ node * create_tree(char * fileName)
         printf("%s is incorrectly formatted\n", fileName);
         return NULL;
     }
-    node * root = (node *) malloc(sizeof(node));
+    Node * root = (Node *) malloc(sizeof(node));
     root->value = value;
     root->left = NULL;
     root->right = NULL;
@@ -49,10 +76,10 @@ node * create_tree(char * fileName)
 
     while (!isEmpty(&q))
     {
-        node * current = dequeue(&q);
+        Node * current = dequeue(&q);
         if (fscanf(fp, "%d", &value) != 1)
             break;
-        node * left = (node *) malloc(sizeof(node));
+        Node * left = (Node *) malloc(sizeof(node));
         left->value = value;
         left->left = NULL;
         left->right = NULL;
@@ -61,7 +88,7 @@ node * create_tree(char * fileName)
 
          if (fscanf(fp, "%d", &value) != 1)
             break;
-        node * right = (node *) malloc(sizeof(node));
+        Node * right = (node *) malloc(sizeof(node));
         right->value = value;
         right->left = NULL;
         right->right = NULL;

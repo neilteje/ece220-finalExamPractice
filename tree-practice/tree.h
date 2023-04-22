@@ -12,6 +12,8 @@ struct node {
     node * right;
 };
 
+void bst_to_dll(struct node* current_node);
+
 // Deletes a doubley linked list
 void deleteList(node * head);
 
