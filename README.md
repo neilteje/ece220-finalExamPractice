@@ -5,5 +5,6 @@
 - If you have any questions email nteje2@illinois.edu or send a Direct Message to teilio#0001.
 
 #### Update Log
+- April 22, 2023: All problems have a possible solution committed. (except 2012 Final Problem 1)
 - April 21, 2023: Edited cpp-practice, trees-practice, linkedlist-practice with initial solutions
 - April 21, 2023: Added all Final Exam Practice Materials
