@@ -10,8 +10,22 @@
 // at addresses pointed by start and finish pointers respectively.
 int find_maxSum(int* arr, int* start, int* finish, int n)
 {
-      // initialize sum, maxSum
-    int sum = 0, maxSum =0;   
+    int curr = 0;
+    int i, sum = -1, maxSum = -1;
+    for (i = 0; i < n; i++) {
+        curr += arr[i];
+
+        if (curr < 0) {
+            curr = 0;
+            sum = -1;
+        } else if (curr > maxSum) {
+            maxSum = curr;
+            *start = sum == -1 ? i : sum;
+            *finish = i;
+            sum = i;
+        }
+    }
+    return maxSum;  
 }
  
 
