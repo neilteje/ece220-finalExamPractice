@@ -1,4 +1,5 @@
 #include "polygon.h"
+#include<math.h>
 
 /* This function should read the number of vertices record from the file with the supplied file_name,
      allocate memory for the vertex array, and populate the array with data read from the file.
@@ -16,18 +17,28 @@
 */
 vertex* read_polygon(char *file_name, int *count)
 {
-     FILE *fptr = fopen(file_name, "r");
-     if (fptr == NULL) {
-          *count = 0;
-          return NULL;
-     }
-     fscanf(fptr, "%d", count);
-     vertex *vrtx = (vertex*)malloc(*count * sizeof(vertex));
-     for (int i = 0; i < *count; i++) {
-          fscanf(fptr, "%d %d", &vrtx[i].x, &vrtx[i].y);
-     }
-     fclose(fptr);
-     return vrtx;
+    FILE* myfile = fopen(file_name, "r");
+    if (!myfile) {
+        *count = 0;
+        return NULL; //failed to read file
+    }
+    char newl;
+    fscanf(myfile, "%d", count);
+    fscanf(myfile, "%c", &newl); //taken vertex count
+    int numofv = *count;    //convenient variable
+    //creating a 2D array to store vertices
+    vertex** verticesarray = (vertex**)malloc(numofv*sizeof(vertex));
+    for (int i = 0; i<numofv; i++){
+        int* x;
+        int* y;
+        fscanf(myfile, "%d %d", x, y);
+        fscanf(myfile, "%c", &newl);
+        verticesarray[i] = (vertex*)malloc(sizeof(vertex));
+        verticesarray[i]->x = *x;
+        verticesarray[i]->y = *y;
+    }
+    fclose(myfile);
+    return verticesarray;
 }
 
 /* This function should calculate length of each side of the polygon as well as the polygon’s perimeter.
@@ -45,15 +56,27 @@ vertex* read_polygon(char *file_name, int *count)
 */
 float calc_perimeter(vertex* vrtx, int count)
 {
-     float perimeter = 0;
-     for (int i = 0; i < count; i++) {
-          int j = (i + 1) % count;
-          float dx = vrtx[j].x - vrtx[i].x;
-          float dy = vrtx[j].y - vrtx[i].y;
-          vrtx[i].length = sqrt(dx*dx + dy*dy);
-          perimeter += vrtx[i].length;
-     }
-     return perimeter;
+    if (!vrtx) return 0.0f;
+    float perimeter = 0;
+    int x1, y1, x2, y2;
+    float sidelength;
+    for (int i = 0; i<count-1; i++){
+        x1 = vrtx[count]->x;
+        y1 = vrtx[count]->y;
+        x2 = vrtx[count+1]->x;
+        y2 = vrtx[count+2]->y;
+        sidelength = sqrt(pow(x2-x1,2)+pow(y2-y1,2));
+        vrtx[count]->length = sidelength;
+        perimeter += sidelength;
+    }
+    x1 = vrtx[0]->x;
+    y1 = vrtx[0]->y;
+    x2 = vrtx[count-1]->x;
+    y2 = vrtx[count-1]->y;
+    sidelength = sqrt(pow(x2-x1,2)+pow(y2-y1,2));
+    vrtx[count-1]->length = sidelength;
+    perimeter += sidelength;
+    return perimeter;
 }
 
 /* This function should write to file file_name the number of vertices record followed by records
@@ -73,16 +96,19 @@ float calc_perimeter(vertex* vrtx, int count)
 */
 int record_polygon(char *file_name, vertex *vrtx, int count, float perimeter)
 {
-    FILE *fptr = fopen(file_name, "w");
-    if (fptr == NULL) {
-        return 0;
+    if (!vrtx) return 0;
+    FILE* myfile = fopen(file_name, "w");
+    char newl = '\n';
+    fprintf(myfile, "%d", count);
+    fprintf(myfile, "%c", newl);
+    int x, y;
+    float sidelength;
+    for (int i = 0; i<count; i++){
+        fprintf(myfile, "%d %d %f", vrtx[count]->x,vrtx[count]->y;vrtx[count]->length);
+        fprintf(myfile, "%c", newl);
     }
-    fprintf(fptr, "%d", count);
-    for (int i = 0; i < count; i++) {
-        fprintf(fptr, " %d %d %.2f", vrtx[i].x, vrtx[i].y, vrtx[i].length);
-    }
-    fprintf(fptr, " %.2f", perimeter);
-    fclose(fptr);
-    free(vrtx);
+    fprintf(myfile, "%f", perimeter);
+    fprintf(myfile, "%c", newl);
+    fclose(myfile);
     return 1;
 }
