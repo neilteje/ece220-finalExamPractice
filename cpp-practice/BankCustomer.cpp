@@ -3,14 +3,15 @@
 //Instantiate new customer with default accounts
 BankCustomer::BankCustomer(string first_name, string last_name){
 //IMPLEMENT ME
-   Person my_customer (first_name, last_name);
+   my_customer.set_name(first_name, last_name);
 }
 
 //Instantiate new customer with defined accounts
 BankCustomer::BankCustomer(string first_name, string last_name, double init_savings_balance, double monthly_savings_interest_rate){
 //IMPLEMENT ME
-   Person my_customer (first_name, last_name);
-   SavingsAccount customer_savings (init_savings_balance, monthly_savings_interest_rate);
+   my_customer.set_name(first_name, last_name);
+   customer_savings.set_balance(init_savings_balance);
+   customer_savings.set_interest_rate(monthly_savings_interest_rate);
 }
 
 //Define parameters of current savings account (does not create new checking account)
@@ -56,5 +57,8 @@ bool BankCustomer::operator - (const double& amount){
 //Adds interest to savings account = savings*interest_rate
 void BankCustomer::add_interest(void){
 //IMPLEMENT ME
-   customer_savings.set_balance(customer_savings.get_balance() * customer_savings.get_interest_rate());
+   double interest = customer_savings.get_interest_rate();
+   double curr = customer_savings.get_balance();
+   double add = interest*curr;
+   customer_savings.set_balance(curr+add);
 }
