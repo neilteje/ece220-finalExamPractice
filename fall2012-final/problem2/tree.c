@@ -5,14 +5,10 @@
 int countNegatives(struct node* root)
 {
    /* Implement Me */
-   if (root == NULL) {
-      return 0;
-   }
-   int count = 0; 
-   if (root->data < 0) {
-      count++;
-   }
-   count += countNegatives(root->left);
-   count += countNegatives(root->right);
-   return count;
+   if (!root) return 0;
+	int curr = 0;
+	if (root->data < 0){
+		curr = 1;
+	}
+	return countNegatives(root->left) + countNegatives(root->right)+curr;
 }
