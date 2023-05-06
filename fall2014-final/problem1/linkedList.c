@@ -22,25 +22,25 @@ int DetectLoop(node *head)
 node *CopyList(node *head)
 {
   //Insert Code here. You can change the return statement given.
-  node* current = head;
-  node* newList = NULL;
+  node* curr = head;
+  node* copiedlist = NULL;
   node* tail = NULL;
  
-  while (current != NULL)
+  while (curr != NULL)
   {
-    if (newList == NULL)
+    if (copiedlist == NULL)
     {
-      newList = (struct Node*)malloc(sizeof(node));
-      newList->value = current->value;
-      newList->next = NULL;
-      tail = newList;
+      copiedlist = (struct Node*)malloc(sizeof(node));
+      copiedlist->value = curr->value;
+      copiedlist->next = NULL;
+      tail = copiedlist;
     } else {
       tail->next = (struct Node*)malloc(sizeof(node));
       tail = tail->next;
-      tail->value = current->value;
+      tail->value = curr->value;
       tail->next = NULL;
     }
-    current = current->next;
+    curr = curr->next;
   }
-  return newList;
+  return copiedlist;
 }
