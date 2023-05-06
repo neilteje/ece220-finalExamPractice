@@ -22,34 +22,53 @@ int main()
 node * farey_seq(int n)
 {
 	/*You code goes here*/
-    node *head = (node *)malloc(sizeof(node));
-    head->numerator = 0;
-    head->denominator = 1;
-    head->next = NULL;
-    node *second = (node *)malloc(sizeof(node));
-    second->numerator = 1;
-    second->denominator = 1;
-    second->next = NULL;
-    head->next = second;
-    for (int order = 2; order <= n; order++) {
-        node *current = head;
-        while (current->next != NULL) {
-            int a = current->numerator;
-            int b = current->denominator;
-            int c = current->next->numerator;
-            int d = current->next->denominator;
-            if (c + d <= order) {
-                node *new_node = (node *)malloc(sizeof(node));
-                new_node->numerator = a + c;
-                new_node->denominator = b + d;
-                new_node->next = current->next;
-                current->next = new_node;
-            }
-            current = current->next;
-        }
+    if (n == 0) return NULL;
+	// working with head
+    node* head = (node*)malloc(sizeof(node));
+	head->numerator = 0;
+	head->denominator = 1;
+
+    // working with next
+	head->next = (node*)malloc(sizeof(node));
+	head->next->numerator = 1;
+	head->next->denominator = 1;
+	head->next->next = NULL;
+
+    // starting farey sequence
+    if (n == 1){
+        print_list(head, n);
+        return head;
     }
-    return head;
+
+    // farey sequence for n > 1
+    print_list(head, 1);
+    int a,b,c,d;
+    node* temp;
+    int x, y;
+    node* temp2 = head;
+	for (int i = 2; i<=n ; i++){
+		head = temp2;
+        while ((head) && (head->next)){
+            a = head->numerator;
+            b = head->next->numerator;
+            c = head->denominator;
+            d = head->next->denominator;
+            if (c + d<=i){
+                temp = head->next;
+                x = a+b;
+                y = c+d;
+                head->next = (node*)malloc(sizeof(node));
+                head->next->numerator = x;
+                head->next->denominator = y;
+                head->next->next = temp2;
+            }
+            head = head->next;
+        }
+        print_list(temp2, i);
+	}
+	return temp2;
 }
+
 void print_list(node * head, int n)
 {
 	if(head == NULL)
